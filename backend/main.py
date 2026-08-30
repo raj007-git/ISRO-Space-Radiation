@@ -11,6 +11,13 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "message": "ISRO Space Radiation Forecasting API"
+    }
+
 # Allow CORS for frontend
 app.add_middleware(
     CORSMiddleware,
