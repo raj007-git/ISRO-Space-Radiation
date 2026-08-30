@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+
+# Models
+models/
+*.pkl
+
+# Dataset
+data/
+*.csv
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
