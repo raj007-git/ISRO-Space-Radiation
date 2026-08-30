@@ -26,8 +26,8 @@ app.add_middleware(
 async def startup_event():
     # Adjust paths based on deployment or local dev
     # Assuming models/ is in the parent directory of backend/ or in the root
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    models_dir = os.path.join(base_dir, "models")
+   base_dir = os.path.dirname(os.path.abspath(__file__))
+   models_dir = os.path.join(base_dir, "models")
 
     print("BASE_DIR =", base_dir)
     print("MODELS_DIR =", models_dir)
