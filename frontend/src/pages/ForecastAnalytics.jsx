@@ -12,8 +12,8 @@ export default function ForecastAnalytics() {
     const load = async () => {
       try {
         const [hRes, cRes] = await Promise.all([
-          fetch('/api/v1/telemetry-history'),
-          fetch('/api/v1/current-space-weather'),
+          fetch('https://isro-space-radiation.onrender.com/api/v1/telemetry-history')
+          fetch('https://isro-space-radiation.onrender.com/api/v1/current-space-weather')
         ]);
         const hj = await hRes.json();
         setTele(hj.telemetry || []);

@@ -15,7 +15,7 @@ function OrangeTicker() {
   useEffect(() => {
     const load = async () => {
       try {
-        const r = await fetch('/api/v1/current-space-weather');
+        const r = await fetch('https://isro-space-radiation.onrender.com/api/v1/current-space-weather')
         const d = await r.json();
         setItems([
           'NOAA UPLINK ACTIVE',
