@@ -27,8 +27,6 @@ async def startup_event():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     models_dir = os.path.join(base_dir, "models")
 
-    print("BASE_DIR =", base_dir)
-    print("MODELS_DIR =", models_dir)
 
     pred_svc = PredictionService(
         model_30min_path=os.path.join(models_dir, "model_30min.pkl"),
