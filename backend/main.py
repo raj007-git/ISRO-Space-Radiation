@@ -14,6 +14,7 @@ app = FastAPI(
 # Allow CORS for frontend
 app.add_middleware(
     CORSMiddleware,
+    
     allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
@@ -27,7 +28,11 @@ async def startup_event():
     # Assuming models/ is in the parent directory of backend/ or in the root
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     models_dir = os.path.join(base_dir, "models")
-    
+
+    print("BASE_DIR =", base_dir)
+    print("MODELS_DIR =", models_dir)
+    print("FILES =", os.listdir(models_dir))
+
     pred_svc = PredictionService(
         model_30min_path=os.path.join(models_dir, "model_30min.pkl"),
         model_6hr_path=os.path.join(models_dir, "model_6hr.pkl"),
