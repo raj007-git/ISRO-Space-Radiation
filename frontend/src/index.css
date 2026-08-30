@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-bg text-cream font-sans antialiased m-0; }
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #141210; }
+::-webkit-scrollbar-thumb { background: #33312F; }
+
+/* Card / Panel */
+.card {
+  @apply bg-panel border border-border rounded-2xl;
+}
+
+/* Orange pill button (primary) */
+.btn-orange {
+  @apply inline-flex items-center gap-2 bg-orange text-cream font-display font-semibold
+         px-5 py-2.5 rounded-pill text-sm tracking-wide
+         hover:bg-orangeHover transition-colors;
+}
+
+/* Ghost pill button */
+.btn-ghost {
+  @apply inline-flex items-center gap-2 border border-border text-cream font-sans font-medium
+         px-5 py-2.5 rounded-pill text-sm
+         hover:border-orange hover:text-orange transition-colors;
+}
+
+/* Section label */
+.label {
+  @apply font-mono text-[11px] tracking-[0.2em] text-muted uppercase;
+}
+
+/* Scrolling ticker */
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-inner { animation: ticker 35s linear infinite; }

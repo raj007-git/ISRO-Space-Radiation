@@ -1,0 +1,10 @@
+data/
+*.csv
+*.pkl
+*.joblib
+*.model
+__pycache__/
+.venv/
+venv/
+data/final_dataset.csv
+*.csv
