@@ -3,37 +3,108 @@
 @tailwind utilities;
 
 @layer base {
-  body { @apply bg-bg text-cream font-sans antialiased m-0; }
+  body {
+    @apply bg-bg text-cream font-sans antialiased m-0 overflow-x-hidden;
+    background-color: #05070C;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 240, 255, 0.08), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 10% 80%, rgba(255, 107, 43, 0.05), transparent 60%);
+  }
 }
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #141210; }
-::-webkit-scrollbar-thumb { background: #33312F; }
-
-/* Card / Panel */
-.card {
-  @apply bg-panel border border-border rounded-2xl;
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(8, 12, 20, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.4);
 }
 
-/* Orange pill button (primary) */
-.btn-orange {
-  @apply inline-flex items-center gap-2 bg-orange text-cream font-display font-semibold
-         px-5 py-2.5 rounded-pill text-sm tracking-wide
-         hover:bg-orangeHover transition-colors;
+/* Glassmorphism Cards & Panels inspired by NASA/Dribbble reference */
+.glass-card {
+  @apply backdrop-blur-2xl bg-spacePanel border border-white/[0.08] rounded-3xl shadow-glass transition-all duration-300;
 }
 
-/* Ghost pill button */
-.btn-ghost {
-  @apply inline-flex items-center gap-2 border border-border text-cream font-sans font-medium
-         px-5 py-2.5 rounded-pill text-sm
-         hover:border-orange hover:text-orange transition-colors;
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Section label */
-.label {
-  @apply font-mono text-[11px] tracking-[0.2em] text-muted uppercase;
+.glass-card-glow {
+  @apply backdrop-blur-2xl bg-spacePanel border border-cyanAccent/30 rounded-3xl shadow-cyan-glow;
 }
 
-/* Scrolling ticker */
-@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.ticker-inner { animation: ticker 35s linear infinite; }
+.glass-card-interactive {
+  @apply glass-card hover:bg-spacePanel/90 hover:border-white/20 hover:shadow-cyan-glow hover:-translate-y-0.5;
+}
+
+/* Tactical HUD Labels */
+.hud-label {
+  @apply font-mono text-[10px] tracking-[0.22em] text-muted uppercase select-none;
+}
+
+.hud-value {
+  @apply font-mono tracking-wider font-semibold;
+}
+
+/* Reticle & Crosshair styling */
+.reticle-crosshair {
+  position: relative;
+}
+.reticle-crosshair::before, .reticle-crosshair::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Cyan Glowing Buttons */
+.btn-cyan {
+  @apply inline-flex items-center gap-2 bg-cyanAccent text-[#05070C] font-display font-bold
+         px-5 py-2.5 rounded-full text-xs tracking-wider uppercase
+         hover:bg-cyanAccent/90 hover:shadow-cyan-glow transition-all duration-200 active:scale-95;
+}
+
+.btn-glass {
+  @apply inline-flex items-center gap-2 backdrop-blur-md bg-white/[0.06] border border-white/10
+         text-cream font-sans font-medium px-4 py-2 rounded-full text-xs tracking-wide
+         hover:bg-white/[0.12] hover:border-white/25 transition-all duration-200;
+}
+
+/* Glowing text gradients */
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+}
+.text-glow-orange {
+  text-shadow: 0 0 20px rgba(255, 107, 43, 0.45);
+}
+.text-glow-green {
+  text-shadow: 0 0 20px rgba(0, 230, 118, 0.45);
+}
+
+/* Ticker Animation */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-inner {
+  animation: ticker 40s linear infinite;
+}
+.ticker-inner:hover {
+  animation-play-state: paused;
+}
+
+/* Polar radar scan */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-radar-sweep {
+  animation: radar-sweep 8s linear infinite;
+  transform-origin: center center;
+}
