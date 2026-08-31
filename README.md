@@ -2,6 +2,12 @@
 
 A production-ready web application designed to predict space radiation levels 30 minutes, 6 hours, and 12 hours into the future, built for space operations monitoring.
 
+# Images 
+<img width="1920" height="1200" alt="Screenshot (147)" src="https://github.com/user-attachments/assets/b37cc42a-b532-4dda-a23b-fad535a13b48" />
+<img width="1920" height="1200" alt="Screenshot (149)" src="https://github.com/user-attachments/assets/28b83277-c680-4530-8e1b-3a59115ab394" />
+
+
+
 ## Project Architecture
 
 - **Models**: Pre-trained XGBoost regressors using telemetry data features (Electron Flux, Solar Wind Speed/Density, IMF Bx/By/Bz) including lag and rolling statistics.
