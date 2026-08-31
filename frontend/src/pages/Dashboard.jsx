@@ -3,6 +3,10 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, ReferenceLine, ReferenceArea
 } from 'recharts';
+import MetricCard from '../components/MetricCard';
+import PredictionPanel from '../components/PredictionPanel';
+import AnimatedStatusBadge from '../components/AnimatedStatusBadge';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 
 /* ── Animated counter ── */
 function Counter({ value, duration = 900 }) {
@@ -175,44 +179,32 @@ export default function Dashboard() {
 
       {/* ── Hero ── */}
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="card flex-1 p-8 relative overflow-hidden">
+        {/* Current radiation metric card */}
+        <div className="card flex-1 p-4 relative overflow-hidden">
           <SystemSchematic fluxValid={fluxValid} />
-          
-          <div className="relative z-10">
-            {/* FIX C-1: ≥2 MeV is the actual NOAA channel. 0.8 MeV is not available in current feed. */}
-            <div className="label mb-3">Current Electron Flux · GOES-16 SEISS · ≥2 MeV</div>
-            {fluxValid ? (
-              <div className="flex items-end gap-4 mt-2">
-                <span className="font-display font-black text-8xl text-cream leading-none shadow-black drop-shadow-lg">
-                  <Counter value={Math.round(flux)} />
-                </span>
-                {/* FIX C-5: Correct unit for electron flux. PFU is for protons. */}
-                <span className="font-display font-bold text-lg text-orange mb-2 drop-shadow-md">electrons / cm² / s</span>
-              </div>
-            ) : (
-              <div className="font-display text-3xl font-bold text-crit mt-4">DATA LINK LOST</div>
-            )}
-            <div className="mt-4 flex items-center gap-3">
-              <div className={`w-2.5 h-2.5 rounded-full ${condBg(cond)} animate-pulse`}></div>
-              <span className={`font-display font-bold text-sm tracking-widest ${condColor(cond)}`}>{cond}</span>
-              <span className="text-muted font-mono text-xs ml-8">
-                {pred ? new Date(pred.timestamp).toISOString().slice(11, 19) + ' UTC' : '--:-- UTC'}
-              </span>
-            </div>
+          <MetricCard
+            title="Current Electron Flux"
+            value={fluxValid ? Math.round(flux) : '--'}
+            unit="electrons / cm² / s"
+            risk={cond}
+          />
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted">
+            <AnimatedStatusBadge status={cond} size="h-3 w-3" />
+            <span className="ml-1">{cond}</span>
+            <span className="ml-4">{pred ? new Date(pred.timestamp).toISOString().slice(11, 19) + ' UTC' : '--:-- UTC'}</span>
           </div>
         </div>
 
+        {/* Mission status card */}
         <div className="card w-56 shrink-0 p-6 flex flex-col justify-between">
           <div className="label mb-4">Mission Status</div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             {['SAFE','WATCH','WARNING','CRITICAL'].map(lvl => {
               const active = cond === lvl;
               return (
-                <div key={lvl} className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-colors ${active ? 'bg-surface' : ''}`}>
-                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${condBg(lvl)} ${active ? 'animate-pulse' : 'opacity-25'}`}></div>
-                  <span className={`font-display text-xs font-semibold tracking-widest ${active ? condColor(lvl) : 'text-border'}`}>
-                    {lvl}
-                  </span>
+                <div key={lvl} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${active ? 'bg-surface' : ''}`}>
+                  <AnimatedStatusBadge status={lvl} size="h-2 w-2" />
+                  <span className={`font-display text-xs font-semibold tracking-widest ${active ? condColor(lvl) : 'text-border'}`}>{lvl}</span>
                 </div>
               );
             })}
@@ -222,42 +214,29 @@ export default function Dashboard() {
       </div>
 
       {/* ── Predictive Horizon ── */}
-      <div>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="label">Predictive Horizon</div>
-          <div className="flex-1 h-px bg-border"></div>
-          {/* FIX C-4: "Ensemble" removed — these are three independent single-model regressors */}
-          <div className="label text-orange">XGBoost Regressor ×3 (Independent Horizons)</div>
-        </div>
+        {/* ── Predictive Horizon ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { label: 'T + 30 MIN', value: p30, r2: r2_30 },
-            { label: 'T + 6 HRS',  value: p6,  r2: r2_6  },
-            { label: 'T + 12 HRS', value: p12, r2: r2_12 },
-          ].map(item => {
-            const c = conditionOf(item.value);
-            return (
-              <div key={item.label} className="card p-6 group hover:border-orange/50 transition-colors relative overflow-hidden">
-                <RadarOverlay />
-                <div className="relative z-10">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="label">{item.label}</div>
-                    {/* FIX C-2: R² (genuine test-set metric) instead of fake "CF %" */}
-                    {item.r2 != null && (
-                      <span className="font-mono text-[10px] text-orange bg-orange/10 px-2 py-0.5 rounded-full">
-                        R² {item.r2}
-                      </span>
-                    )}
-                  </div>
-                  <div className="font-display font-black text-4xl text-cream drop-shadow-sm">
-                    {item.value != null ? <Counter value={Math.round(item.value)} /> : '---'}
-                  </div>
-                  <div className="font-mono text-xs text-muted mt-1">electrons / cm² / s</div>
-                  <div className={`font-display text-xs font-bold tracking-widest mt-3 ${condColor(c)}`}>{c}</div>
-                </div>
-              </div>
-            );
-          })}
+          <PredictionPanel
+            label="T + 30 MIN"
+            value={p30}
+            unit="electrons / cm² / s"
+            risk={conditionOf(p30)}
+            confidence={r2_30}
+          />
+          <PredictionPanel
+            label="T + 6 HRS"
+            value={p6}
+            unit="electrons / cm² / s"
+            risk={conditionOf(p6)}
+            confidence={r2_6}
+          />
+          <PredictionPanel
+            label="T + 12 HRS"
+            value={p12}
+            unit="electrons / cm² / s"
+            risk={conditionOf(p12)}
+            confidence={r2_12}
+          />
         </div>
       </div>
 
