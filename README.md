@@ -3,8 +3,12 @@
 A production-ready web application designed to predict space radiation levels 30 minutes, 6 hours, and 12 hours into the future, built for space operations monitoring.
 
 # Images 
-<img width="1920" height="1200" alt="Screenshot (147)" src="https://github.com/user-attachments/assets/b37cc42a-b532-4dda-a23b-fad535a13b48" />
-<img width="1920" height="1200" alt="Screenshot (149)" src="https://github.com/user-attachments/assets/28b83277-c680-4530-8e1b-3a59115ab394" />
+<img width="1920" height="1009" alt="Screenshot (147)" src="https://github.com/user-attachments/assets/4193e014-ac8d-4f46-8f95-2f0371a1ae5f" />
+<img width="1920" height="1021" alt="Screenshot (149)" src="https://github.com/user-attachments/assets/a021879b-0051-4cba-b1c6-a2f8099648ac" />
+<img width="1920" height="989" alt="Screenshot (151)" src="https://github.com/user-attachments/assets/34dca331-edc6-4000-b03d-ddf05979dba6" />
+
+
+
 
 
 
